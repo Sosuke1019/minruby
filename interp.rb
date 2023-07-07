@@ -17,11 +17,30 @@ def evaluate(tree)
         left = evaluate(tree[1])
         right = evaluate(tree[2])
         left * right
-    else
-        # ここではtree[0] == "/"を意味する
+    when "%"
         left = evaluate(tree[1])
         right = evaluate(tree[2])
-        left / right
+        left % right
+    when "<"
+        left = evaluate(tree[1])
+        right = evaluate(tree[2])
+        left < right
+    when "<="
+        left = evaluate(tree[1])
+        right = evaluate(tree[2])
+        left <= right
+    when "=="
+        left = evaluate(tree[1])
+        right = evaluate(tree[2])
+        left == right
+    when ">="
+        left = evaluate(tree[1])
+        right = evaluate(tree[2])
+        left >= right
+    when ">"
+        left = evaluate(tree[1])
+        right = evaluate(tree[2])
+        left > right
     end
 end
 
