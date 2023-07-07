@@ -1,6 +1,7 @@
 require "minruby"
 
 
+# 演算結果を返す関数
 def evaluate(tree)
     case tree[0]
     when "lit"
@@ -44,6 +45,22 @@ def evaluate(tree)
     end
 end
 
+# 最大値を返す関数
+def max(tree)
+    if tree[0] == "lit"
+        tree[1]
+    else
+        left  = max(tree[1])
+        right = max(tree[2])
+        if left < right
+            right
+        else
+            left
+        end
+    end
+end
+
+
 
 # ① 計算式の文字列を読み込む
 str = gets
@@ -52,7 +69,9 @@ str = gets
 tree = minruby_parse(str)
 
 # ③ 計算の木を実行(計算)する
-answer = evaluate(tree)
+answer = max(tree)
 
 # ④ 計算結果を出力する
 p answer
+
+p minruby_parse("4 / 2")
