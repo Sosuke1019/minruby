@@ -62,6 +62,20 @@ def max(tree)
     end
 end
 
+# 最小値を返す関数
+def min(tree)
+    if tree[0] == "lit"
+        tree[1]
+    else
+        left  = max(tree[1])
+        right = max(tree[2])
+        if left > right
+            right
+        else
+            left
+        end
+    end
+end
 
 
 # ① 計算式の文字列を読み込む
