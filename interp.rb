@@ -44,6 +44,14 @@ def evaluate(tree)
         left > right
     when "func_call"
         p evaluate(tree[2])
+    when "stmts"
+        i = 1
+        last = nil
+        while tree[i] != nil
+            last = evaluate(tree[i])
+            i = i + 1
+        end
+        last
     end
 end
 
@@ -82,8 +90,8 @@ end
 # コマンドラインに渡されたファイルを読み込んで文字列で返す
 str = minruby_load()
 
-# ② 計算式の文字列を構文解析して計算の木(構文木)にする
+# ② 計算式の文字列を計算の木に変換する
 tree = minruby_parse(str)
 
-# ③ 計算の木を実行(計算)する
+# ③ 計算の木を実行（計算）する
 answer = evaluate(tree)
