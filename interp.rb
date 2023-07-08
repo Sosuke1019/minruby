@@ -2,48 +2,48 @@ require "minruby"
 
 
 # 演算結果を返す関数
-def evaluate(tree)
+def evaluate(tree, env)
     case tree[0]
     when "lit"
         tree[1]
     when "+"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left + right
     when "-"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left - right
     when "*"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left * right
     when "%"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left % right
     when "<"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left < right
     when "<="
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left <= right
     when "=="
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left == right
     when ">="
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left >= right
     when ">"
-        left = evaluate(tree[1])
-        right = evaluate(tree[2])
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
         left > right
     when "func_call"
-        p evaluate(tree[2])
+        p evaluate(tree[2], env)
     when "stmts"
         i = 1
         last = nil
@@ -52,6 +52,8 @@ def evaluate(tree)
             i = i + 1
         end
         last
+    when "var_assign"
+        env[tree[1]] = evaluate(tree[2], env)
     end
 end
 
@@ -94,4 +96,6 @@ str = minruby_load()
 tree = minruby_parse(str)
 
 # ③ 計算の木を実行（計算）する
-answer = evaluate(tree)
+# インタプリタの実行を開始する時には何の変数も定義されていない
+env = {}
+answer = evaluate(tree, env)
