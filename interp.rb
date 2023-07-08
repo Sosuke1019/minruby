@@ -18,10 +18,26 @@ def evaluate(tree, env)
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
         left * right
+    when '/'
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
+        left / right
     when "%"
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
         left % right
+    when '**'
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
+        left**right
+    when '=='
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
+        left == right
+    when '!='
+        left = evaluate(tree[1], env)
+        right = evaluate(tree[2], env)
+        left != right
     when "<"
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
@@ -30,10 +46,6 @@ def evaluate(tree, env)
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
         left <= right
-    when "=="
-        left = evaluate(tree[1], env)
-        right = evaluate(tree[2], env)
-        left == right
     when ">="
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
@@ -46,19 +58,19 @@ def evaluate(tree, env)
     when "func_call"
         p evaluate(tree[2], env)
     # 複文の対応
-    when "stmts"
+    when 'stmts'
         i = 1
         last = nil
-        while tree[i] != nil
+        while !tree[i].nil?
             last = evaluate(tree[i], env)
-            i = i + 1
+            i+= 1
         end
-        last
+    last
     # 変数を代入する
-    when "var_assign"
+    when 'var_assign'
         env[tree[1]] = evaluate(tree[2], env)
     # 変数を参照する
-    when "var_ref"
+    when 'var_ref'
         env[tree[1]]
     end
 end
