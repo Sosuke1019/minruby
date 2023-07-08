@@ -42,6 +42,8 @@ def evaluate(tree)
         left = evaluate(tree[1])
         right = evaluate(tree[2])
         left > right
+    when "func_call"
+        p evaluate(tree[2])
     end
 end
 
@@ -63,15 +65,11 @@ end
 
 
 # ① 計算式の文字列を読み込む
-str = gets
+# コマンドラインに渡されたファイルを読み込んで文字列で返す
+str = minruby_load()
 
 # ② 計算式の文字列を構文解析して計算の木(構文木)にする
 tree = minruby_parse(str)
 
 # ③ 計算の木を実行(計算)する
-answer = max(tree)
-
-# ④ 計算結果を出力する
-p answer
-
-p minruby_parse("4 / 2")
+answer = evaluate(tree)
