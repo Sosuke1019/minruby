@@ -54,11 +54,9 @@ def evaluate(tree, env)
         left = evaluate(tree[1], env)
         right = evaluate(tree[2], env)
         left > right
-    # 関数の対応
-    when "func_call"
+    when "func_call" # 関数の対応
         p evaluate(tree[2], env)
-    # 複文の対応
-    when 'stmts'
+    when 'stmts' # 複文の対応
         i = 1
         last = nil
         while !tree[i].nil?
@@ -66,12 +64,14 @@ def evaluate(tree, env)
             i+= 1
         end
     last
-    # 変数を代入する
-    when 'var_assign'
+    when 'var_assign' # 変数を代入する
         env[tree[1]] = evaluate(tree[2], env)
-    # 変数を参照する
-    when 'var_ref'
+    when 'var_ref' # 変数を参照する
         env[tree[1]]
+    else
+        p("error")
+        pp(tree)
+        raise("unknown node") #プログラムの動作を停止する
     end
 end
 
