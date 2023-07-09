@@ -4,6 +4,11 @@ require "minruby"
 # 演算結果を返す関数
 def evaluate(tree, env)
     case tree[0]
+    when "if"
+        if evaluate(tree[1], env)
+            evaluate(tree[2], env)
+        else
+            evaluate(tree[3], env)
     when "lit"
         tree[1]
     when "+"
