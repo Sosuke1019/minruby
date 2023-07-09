@@ -114,6 +114,7 @@ str = minruby_load()
 tree = minruby_parse(str)
 
 # ③ 計算の木を実行（計算）する
-# インタプリタの実行を開始する時には何の変数も定義されていない
+# 環境の初期状態
 env = {}
-answer = evaluate(tree, env)
+# 抽象構文木と環境を指定して実行開始
+evaluate(tree, env)
