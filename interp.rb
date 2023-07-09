@@ -72,10 +72,17 @@ def evaluate(tree, env)
         if evaluate(tree[1], env)
             evaluate(tree[2], env)
         else
-            evaluate(tree[3], env)
+            # else節が存在する場合にのみ実行する処理
+            # 右辺の条件がfalseの場合に左辺の式を評価する「後置unless(unless修飾子)」
+            evaluate(tree[3], env) unless tree[3].nil?
         end
     when "while"
         while evaluate(tree[1], env)
+            evaluate(tree[2], env)
+        end
+    when "while2"
+        evaluate(tree[2], env)
+        while evaluate(tree[1],env)
             evaluate(tree[2], env)
         end
     else
