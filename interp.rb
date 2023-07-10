@@ -97,6 +97,10 @@ def evaluate(tree, genv, lenv)
         while evaluate(tree[1],genv, lenv)
             evaluate(tree[2], genv, lenv)
         end
+    when "func_def"
+        # 関数を定義している
+        # tree[2]は「仮引数名の配列」、tree[3]は「関数本体」を意味する
+        genv[tree[1]] = ["user_defined", tree[2], tree[3]]
     else
         p("error")
         pp(tree)
@@ -143,11 +147,12 @@ str = minruby_load()
 tree = minruby_parse(str)
 
 # ③ 計算の木を実行する
-# 環境の初期状態
+# 関数名の環境
 genv = {
     "p" => ["builtin", "p"],
     "raise" => ["builtin", "raise"],
 }
+# 変数名の環境
 lenv = {}
 # 抽象構文木と環境を指定して実行開始
 evaluate(tree, genv, lenv)
