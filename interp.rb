@@ -110,6 +110,19 @@ def evaluate(tree, genv, lenv)
         while evaluate(tree[1],genv, lenv)
             evaluate(tree[2], genv, lenv)
         end
+    when "ary_new"
+        ary = []
+        i = 0
+        while tree[i + 1]
+            ary[i] = evaluate(tree[i + 1], genv, lenv)
+            i = i + 1
+        end
+        ary
+    when "ary_ref"
+        # aryは配列を表す式が表す配列、idxはインデックスを表す式が表すインデックス
+        ary = evaluate(tree[1], genv, lenv)
+        idx = evaluate(tree[2], genv, lenv)
+        ary[idx]
     else
         p("error")
         pp(tree)

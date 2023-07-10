@@ -1,7 +1,4 @@
-def foo()
-    x = 0
-    p(x)
-end
-x = 1
-foo() #=> 0
-p(x)  #=> 1
+ary = [1, 2, 3]
+p(ary[0]) 
+p(ary[1]) 
+p(ary[2]) 

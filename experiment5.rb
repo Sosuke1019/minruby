@@ -1,7 +1,5 @@
 require "minruby"
 pp(minruby_parse("
-def add(x, y)
-    x + y
-end
+[1, 2, 3, 6 * 7]
 "))
 
