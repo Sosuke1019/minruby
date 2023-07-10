@@ -2,7 +2,7 @@ require "minruby"
 
 
 # 演算結果を返す関数
-def evaluate(tree, venv, lenv)
+def evaluate(tree, genv, lenv)
     case tree[0]
     when "lit"
         tree[1]
@@ -55,7 +55,19 @@ def evaluate(tree, venv, lenv)
         right = evaluate(tree[2], genv, lenv)
         left > right
     when "func_call" # 関数の対応
-        p evaluate(tree[2], genv, lenv) 
+        args = []
+        i = 0
+        while tree[i + 2]
+            args[i] = evaluate(tree[i + 2], genv, lenv)
+            i = i + 1
+        end
+        mhd = genv[tree[1]]
+        if mhd[0] == "builtin"
+            # 「本物のRubyの関数」を処理する関数(minrubyパッケージの組み込み関数)
+            minruby_call(mhd[1], args)
+        else
+            #
+        end
     when 'stmts' # 複文の対応
         i = 1
         last = nil
@@ -82,7 +94,7 @@ def evaluate(tree, venv, lenv)
         end
     when "while2"
         evaluate(tree[2], genv, lenv)
-        while evaluate(tree[1],venv, lenv)
+        while evaluate(tree[1],genv, lenv)
             evaluate(tree[2], genv, lenv)
         end
     else
@@ -135,4 +147,4 @@ tree = minruby_parse(str)
 genv = { "p" => ["builtin", "p"]}
 lenv = {}
 # 抽象構文木と環境を指定して実行開始
-evaluate(tree, venv, lenv)
+evaluate(tree, genv, lenv)
