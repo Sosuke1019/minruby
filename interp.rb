@@ -69,16 +69,17 @@ def evaluate(tree, genv, lenv)
             # 「本物のRubyの関数」を処理する関数(minrubyパッケージの組み込み関数)
             minruby_call(mhd[1], args)
         else
+            new_lenv = {}
             # mhd[1]には仮引数名の配列が入っている
             params = mhd[1]
             i = 0
             # argsに入っている実引数の配列を順番に変数の環境lenvへと入れている
             while
-                lenv[params[i]] = args[i]
+                new_lenv[params[i]] = args[i]
                 i = i + 1
             end
         # mhd[2]に入っている関数本体を評価
-        evaluate(mhd[2], genv, lenv)
+        evaluate(mhd[2], genv, new_lenv)
         end
     when 'stmts' # 複文の対応
         i = 1
