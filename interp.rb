@@ -123,6 +123,11 @@ def evaluate(tree, genv, lenv)
         ary = evaluate(tree[1], genv, lenv)
         idx = evaluate(tree[2], genv, lenv)
         ary[idx]
+    when "ary_assign"
+        ary = evaluate(tree[1], genv, lenv)
+        idx = evaluate(tree[2], genv, lenv)
+        val = evaluate(tree[3], genv, lenv)
+        ary[idx] = val
     else
         p("error")
         pp(tree)
