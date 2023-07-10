@@ -54,6 +54,9 @@ def evaluate(tree, genv, lenv)
         left = evaluate(tree[1], genv, lenv)
         right = evaluate(tree[2], genv, lenv)
         left > right
+    when "func_def" # 関数を定義している
+        # tree[2]は「仮引数名の配列」、tree[3]は「関数本体」を意味する
+        genv[tree[1]] = ["user_defined", tree[2], tree[3]]
     when "func_call" # 関数の対応
         args = []
         i = 0
@@ -66,7 +69,16 @@ def evaluate(tree, genv, lenv)
             # 「本物のRubyの関数」を処理する関数(minrubyパッケージの組み込み関数)
             minruby_call(mhd[1], args)
         else
-            p "a"
+            # mhd[1]には仮引数名の配列が入っている
+            params = mhd[1]
+            i = 0
+            # argsに入っている実引数の配列を順番に変数の環境lenvへと入れている
+            while
+                lenv[params[i]] = args[i]
+                i = i + 1
+            end
+        # mhd[2]に入っている関数本体を評価
+        evaluate(mhd[2], genv, lenv)
         end
     when 'stmts' # 複文の対応
         i = 1
@@ -97,10 +109,6 @@ def evaluate(tree, genv, lenv)
         while evaluate(tree[1],genv, lenv)
             evaluate(tree[2], genv, lenv)
         end
-    when "func_def"
-        # 関数を定義している
-        # tree[2]は「仮引数名の配列」、tree[3]は「関数本体」を意味する
-        genv[tree[1]] = ["user_defined", tree[2], tree[3]]
     else
         p("error")
         pp(tree)
