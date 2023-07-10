@@ -66,7 +66,7 @@ def evaluate(tree, genv, lenv)
             # 「本物のRubyの関数」を処理する関数(minrubyパッケージの組み込み関数)
             minruby_call(mhd[1], args)
         else
-            #
+            p "a"
         end
     when 'stmts' # 複文の対応
         i = 1
@@ -142,9 +142,12 @@ str = minruby_load()
 # ② 計算式の文字列を計算の木に変換する
 tree = minruby_parse(str)
 
-# ③ 計算の木を実行（計算）する
+# ③ 計算の木を実行する
 # 環境の初期状態
-genv = { "p" => ["builtin", "p"]}
+genv = {
+    "p" => ["builtin", "p"],
+    "raise" => ["builtin", "raise"],
+}
 lenv = {}
 # 抽象構文木と環境を指定して実行開始
 evaluate(tree, genv, lenv)
