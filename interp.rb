@@ -99,7 +99,7 @@ def evaluate(tree, genv, lenv)
         else
             # else節が存在する場合にのみ実行する処理
             # 右辺の条件がfalseの場合に左辺の式を評価する「後置unless(unless修飾子)」
-            evaluate(tree[3], genv, lenv) unless tree[3].nil?
+            evaluate(tree[3], genv, lenv)
         end
     when "while"
         while evaluate(tree[1], genv, lenv)
@@ -128,6 +128,16 @@ def evaluate(tree, genv, lenv)
         idx = evaluate(tree[2], genv, lenv)
         val = evaluate(tree[3], genv, lenv)
         ary[idx] = val
+    when "hash_new"
+        hsh = {}
+        i = 0
+        while tree[i + 1]
+            key = evaluate(tree[i + 1], genv, lenv)
+            val = evaluate(tree[i + 2], genv, lenv)
+            hsh[key] = val
+            i = i + 2
+        end
+        hsh
     else
         p("error")
         pp(tree)
@@ -178,6 +188,10 @@ tree = minruby_parse(str)
 genv = {
     "p" => ["builtin", "p"],
     "raise" => ["builtin", "raise"],
+    "require" => ["builtin", "require"],
+    "minruby_parse" => ["builtin", "minruby_parse"],
+    "minruby_load" => ["builtin", "minruby_load"],
+    "minruby_call" => ["builtin", "minruby_call"],
 }
 # 変数名の環境
 lenv = {}
